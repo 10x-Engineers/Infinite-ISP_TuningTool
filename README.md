@@ -7,7 +7,7 @@ Infinite-ISP Tuning Tool is a console-based ISP (image signal processor) tuning 
 This cross-platform application provides a diverse range of algorithms aimed at calibrating a Bayer RAW image coming directly from an image sensor.
 
 
-![](https://github.com/10xEngineersTech/InfiniteISP_TuningTool/blob/main/docs/assets/Tuning_Tool_Block_Diagram.png)
+![](https://github.com/10xEngineersTech/Infinite-ISP_TuningTool/blob/improvements/docs/assets/Tuning_Tool_Block_Diagram.png)
 
 
 ## Usage
