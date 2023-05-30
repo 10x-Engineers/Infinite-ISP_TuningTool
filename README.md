@@ -89,3 +89,12 @@ Links to Infinite-ISP and supported repos.
 - [Infinite-ISP](https://github.com/xx-isp/infinite-isp)
 
 - [Infinite-ISP_GM](https://github.com/10xEngineersTech/Infinite-ISP_GoldenModel) 
+
+## Contact
+For any inquiries or feedback regarding this project, feel free to reach out to us.
+
+
+Website: http://www.10xEngineers.ai
+
+LinkedIn: https://www.linkedin.com/company/10x-engineers/
+ 
