@@ -7,7 +7,7 @@ Infinite-ISP Tuning Tool is a console-based ISP (image signal processor) tuning 
 This cross-platform application provides a diverse range of algorithms aimed at calibrating a Bayer RAW image coming directly from an image sensor.
 
 
-![](https://github.com/10xEngineersTech/Infinite-ISP_TuningTool/blob/improvements/docs/assets/Tuning_Tool_Block_Diagram.png)
+![](docs\assets\Tuning_Tool_Block_Diagram.png)
 
 
 ## Usage
@@ -67,7 +67,7 @@ By following the above steps, the tool will start, clear the console and display
 ### Example
 Upon successfully launching the Tuning Tool, its main menu pops up with a list of all available modules.
 
-![](https://github.com/10xEngineersTech/InfiniteISP_TuningTool/blob/qa_improvements_ss/docs/assets/Tuning%20Tool%20Main%20Menu.png)
+![](docs\assets\Tuning_Tool_Main_Menu.png)
 
 - To run a specific module, simply select the corresponding option from the menu. For instance, to start the Black Level Calibration (BLC) module, choose option 1.
 
