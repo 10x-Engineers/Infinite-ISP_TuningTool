@@ -1,8 +1,18 @@
+# Infinite-ISP
+Infinite-ISP is a one stop solution for all your ISP development needs - from algorithms to an FPGA prototype and associated firmware, tools, etc. Its primary goal is to offer a unified platform that empowers ISP developers to accelerate ISP innovation. It includes a complete collection of camera pipeline modules written in Python, an FPGA bit-stream & the associated firmware for the implementation of the pipeline on the Kria KV260 development board and lastly a stand-alone Python based Tuning tool application for the pipeline.  The main components of the Infinite-ISP project are listed below:
+
+| Repository name        | Description      | 
+| -------------  | ------------- |
+| **[Infinite-ISP_AlgorithmDesign](https://github.com/xx-isp/infinite-isp)**                        | Python based model of the Infinite-ISP pipeline for algorithm development |
+| **[Infinite-ISP_ReferenceModel](https://github.com/10xEngineersTech/Infinite-ISP_ReferenceModel)**                         | Python based fixed-point model of the Infinite-ISP pipeline for hardware implementation |
+| **[Infinite-ISP_FPGABitstream](https://github.com/10xEngineersTech/Infinite-ISP_FPGABitstream)**                                      | FPGA bit-stream for the  Kria kV260’s Xilinx® ZU5EV Ultrascale FPGA|
+| **[Infinite-ISP_Firmware](https://github.com/10xEngineersTech/Infinite-ISP_Firmware)**                                      | Firmware for the Kria kV260’s embedded Arm® Cortex®A53 processor|
+| **[Infinite-ISP_Tuning Tool](https://github.com/10xEngineersTech/Infinite-ISP_TuningTool)** :anchor:                             | Collection of calibration and analysis tools for the Infinite-ISP |
 
 # Infinite-ISP Tuning Tool
 ## Overview
 
-Infinite-ISP Tuning Tool is a console-based ISP (image signal processor) tuning application that is specifically designed to tune various modules in the [Infinite-ISP_GM](https://github.com/10xEngineersTech/Infinite-ISP_GoldenModel). Apart from working along with Infinite-ISP pipeline, this tuning tool can be used as a seperate stand-alone application to perform image quality analysis.
+Infinite-ISP Tuning Tool is a console-based ISP (image signal processor) tuning application that is specifically designed to tune various modules in the [Infinite-ISP_ReferenceModel](https://github.com/10xEngineersTech/Infinite-ISP_ReferenceModel). Apart from working along with Infinite-ISP pipeline, this tuning tool can be used as a seperate stand-alone application to perform image quality analysis.
 
 This cross-platform application provides a diverse range of algorithms aimed at calibrating a Bayer RAW image coming directly from an image sensor.
 
@@ -67,7 +77,7 @@ By following the above steps, the tool will start, clear the console and display
 ### Example
 Upon successfully launching the Tuning Tool, its main menu pops up with a list of all available modules.
 
-![](https://github.com/10xEngineersTech/InfiniteISP_TuningTool/blob/qa_improvements_ss/docs/assets/Tuning%20Tool%20Main%20Menu.png)
+![](https://github.com/10xEngineersTech/Infinite-ISP_TuningTool/blob/improvements/docs/assets/Tuning_Tool_Main_Menu.png)
 
 - To run a specific module, simply select the corresponding option from the menu. For instance, to start the Black Level Calibration (BLC) module, choose option 1.
 
@@ -84,8 +94,12 @@ For more comprehensive documentation and to understand how to use the Tuning Too
 ## License
 This project is licensed under Apache 2.0 (see [LICENSE](https://github.com/10xEngineersTech/InfiniteISP_TuningTool/blob/documentation_updates/LICENSE.txt) file).
 
-## Links
-Links to Infinite-ISP and supported repos.
-- [Infinite-ISP](https://github.com/xx-isp/infinite-isp)
 
-- [Infinite-ISP_GM](https://github.com/10xEngineersTech/Infinite-ISP_GoldenModel) 
+## Contact
+For any inquiries or feedback regarding this project, feel free to reach out to us.
+
+
+Website: http://www.10xEngineers.ai
+
+LinkedIn: https://www.linkedin.com/company/10x-engineers/
+ 
