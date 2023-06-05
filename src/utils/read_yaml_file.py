@@ -79,10 +79,10 @@ class ReadYMLFile:
         """
         # Extract gamma LUTs
         gamma_corr = self.c_yaml["gamma_correction"]
-        gamma_lut8 = gamma_corr["gammaLut8"]
-        gamma_lut10 = gamma_corr["gammaLut10"]
-        gamma_lut12 = gamma_corr["gammaLut12"]
-        gamma_lut14 = gamma_corr["gammaLut14"]
+        gamma_lut8 = gamma_corr["gamma_lut_8"]
+        gamma_lut10 = gamma_corr["gamma_lut_10"]
+        gamma_lut12 = gamma_corr["gamma_lut_12"]
+        gamma_lut14 = gamma_corr["gamma_lut_14"]
 
         return (gamma_lut8, gamma_lut10, gamma_lut12, gamma_lut14)
 
