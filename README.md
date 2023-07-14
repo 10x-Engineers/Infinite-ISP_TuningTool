@@ -92,7 +92,7 @@ Upon successfully launching the Tuning Tool, its main menu pops up with a list o
 
 
 ## User Guide
-For more comprehensive documentation and to understand how to use the Tuning Tool effectively, please visit the [User Guide](https://github.com/10xEngineersTech/InfiniteISP_TuningTool#user-guide). 
+For more comprehensive documentation and to understand how to use the Tuning Tool effectively, please visit the [User Guide](https://github.com/10xEngineersTech/Infinite-ISP_TuningTool/blob/f681de0f08ddd9966c045d018ebdae32587b6863/docs/Tuning%20Tool%20User%20Guide.pdf). 
 
 ## License
 This project is licensed under Apache 2.0 (see [LICENSE](https://github.com/10xEngineersTech/InfiniteISP_TuningTool/blob/documentation_updates/LICENSE.txt) file).
