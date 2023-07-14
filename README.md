@@ -22,13 +22,15 @@ This cross-platform application provides a diverse range of algorithms aimed at 
 
 ## Usage
 
-Tuning Tool is designed to work with the Infinite-ISP_GM. It uses the config file from the Infinite-ISP_GM, performs the calibration, and updates the config file with the tuned parameters that can be used in the pipeline. For more details see [User Guide](https://github.com/10xEngineersTech/InfiniteISP_TuningTool#user-guide)
+Tuning Tool is designed to work with the Infinite-ISP_ReferenceModel. It uses the config file from the Infinite-ISP_ReferenceModel, performs the calibration, and updates the config file with the tuned parameters that can be used in the pipeline. For more details see [User Guide](https://github.com/10xEngineersTech/InfiniteISP_TuningTool#user-guide)
 
 Infinite-ISP Tuning Tool can be used separately as a stand-alone application for image quality analysis. This comprehensive toolset not only provides user with precise control over the calibration modules, but also allows user to analyse the quality of the images using the analysis modules. With respect to its usage, it is divided into two categories:
 
 - Calibration Tools
 
 - Analysis Tools
+
+- Generate Configuration Files
 
 ## Features
 The Infinite-ISP Tuning Tool provides the following features.
@@ -40,7 +42,8 @@ The Infinite-ISP Tuning Tool provides the following features.
 | Color Correction Matrix (CCM) | Calculates a 3x3 color correction matrix using a ColorChecker RAW or RGB image.|
 | Gamma | Compares the user-defined gamma curve with the sRGB color space gamma ≈ 2.2.| 
 | Bayer Noise Level Estimation | Estimates the noise levels of the six grayscale patches on a ColorChecker RAW image.|
-| Luminance Noise Level Estimation | Estimates the luminance noise level of the six grayscale patches on a ColorChecker RAW or RGB image.| 
+| Luminance Noise Level Estimation | Estimates the luminance noise level of the six grayscale patches on a ColorChecker RAW or RGB image.|
+| Generate Configuration Files | Generates the configuration files for the Infinite-ISP_ReferenceModel and FPGA.| 
 
 
 
@@ -79,7 +82,7 @@ Upon successfully launching the Tuning Tool, its main menu pops up with a list o
 
 ![](docs/assets/Tuning_Tool_Main_Menu.png)
 
-- To run a specific module, simply select the corresponding option from the menu. For instance, to start the Black Level Calibration (BLC) module, choose option 1.
+- To run a specific module, simply select the corresponding option from the menu using the up and down arrow buttons. For instance, to start the Black Level Calibration (BLC) module, choose option 1.
 
 - In each module, the first step is to display a main menu that outlines the specific functionalities and requirements of that module. The menu guides through the necessary steps and options to perform the calibration or analysis associated with the module.
 
@@ -89,7 +92,7 @@ Upon successfully launching the Tuning Tool, its main menu pops up with a list o
 
 
 ## User Guide
-For more comprehensive documentation and to understand how to use the Tuning Tool effectively, please visit the [User Guide](https://github.com/10xEngineersTech/InfiniteISP_TuningTool/blob/669c15c12dd47bc2445c71c93d2e1aa1b66482c1/docs/Tuning%20Tool%20User%20Guide.pdf). 
+For more comprehensive documentation and to understand how to use the Tuning Tool effectively, please visit the [User Guide](https://github.com/10xEngineersTech/InfiniteISP_TuningTool#user-guide). 
 
 ## License
 This project is licensed under Apache 2.0 (see [LICENSE](https://github.com/10xEngineersTech/InfiniteISP_TuningTool/blob/documentation_updates/LICENSE.txt) file).

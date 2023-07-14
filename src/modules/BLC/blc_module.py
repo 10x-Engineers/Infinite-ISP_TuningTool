@@ -5,13 +5,12 @@ Author: 10xEngineers
 ------------------------------------------------------------
 """
 import os
-import numpy as np
 from src.utils.algo_common_utils import select_image_and_get_para
 from src.utils.gui_common_utils import (
-    get_config_out_file,
     generate_separator,
 )
-from src.utils.read_yaml_file import ReadYMLFile
+from src.modules.BLC.blc_algo import BlackLevelsAlgo
+from src.utils.read_yaml_file import ReadWriteYMLFile
 
 
 class BlackLevelCalibrationModule:
@@ -21,11 +20,18 @@ class BlackLevelCalibrationModule:
 
     def __init__(self, in_config_file):
         self.in_config_file = in_config_file
+
         self.raw_image_para = None
+        self.bayer = None
+        self.bit_dep = None
+        self.is_linear = False
+
         self.__r = 0
         self.__gr = 0
         self.__gb = 0
         self.__b = 0
+
+        self.blc_algo = None
 
     def is_image_and_para_loaded(self):
         """
@@ -33,76 +39,57 @@ class BlackLevelCalibrationModule:
         """
         file_type = (("RAW Files", "*.raw"),)
         is_selected, self.raw_image_para = select_image_and_get_para(file_type)
-
+        self.blc_algo = BlackLevelsAlgo(self.raw_image_para)
         return is_selected
+
+    def set_blc_para(self, is_linear):
+        """
+        Set flag status to true if the calculated
+        black levels need to be applied
+        """
+        self.is_linear = is_linear
 
     def execute(self):
         """
-        image_loaded, raw_image = get_raw_image(
-        self.raw_image_para.file_name,
-        self.raw_image_para.width, self.raw_image_para.height)
-
-        if not image_loaded:
-            return False
+        This function will calculate and return black
+        levels.
         """
-
-        self.calculate_blc(self.raw_image_para.raw_image)
-
-        self.display_black_levels()
-        return True
-
-    def calculate_blc(self, raw_image):
-        """
-        There are 3 steps involved in the function.
-        1) Separate the four channels.
-        2) Calcualte averages of each channel.
-        3) Map the averages on the bayer pattern.
-        """
-        channel_1 = raw_image[0::2, 0::2]
-        channel_2 = raw_image[0::2, 1::2]
-        channel_3 = raw_image[1::2, 0::2]
-        channel_4 = raw_image[1::2, 1::2]
-
-        avg_ch1 = int(np.mean(channel_1))
-        avg_ch2 = int(np.mean(channel_2))
-        avg_ch3 = int(np.mean(channel_3))
-        avg_ch4 = int(np.mean(channel_4))
-
-        bayer_mapping = {
-            "RGGB": [avg_ch1, avg_ch2, avg_ch3, avg_ch4],
-            "GRBG": [avg_ch2, avg_ch1, avg_ch4, avg_ch3],
-            "GBRG": [avg_ch3, avg_ch4, avg_ch1, avg_ch2],
-            "BGGR": [avg_ch4, avg_ch3, avg_ch2, avg_ch1],
-        }
-
-        self.__r, self.__gr, self.__gb, self.__b = bayer_mapping[
-            self.raw_image_para.bayer_pattern
-        ]
-
-    def display_black_levels(self):
-        """
-        Display black levels
-        """
+        self.__r, self.__gr, self.__gb, self.__b = self.blc_algo.calculate_blc()
         generate_separator("Calibrated black levels", "-")
-        print("R Channel  = ", self.__r)
-        print("Gr Channel = ", self.__gr)
-        print("Gb Channel = ", self.__gb)
-        print("B Channel  = ", self.__b, "\n")
+        self.blc_algo.display_black_levels((self.__r, self.__gr, self.__gb, self.__b))
+
+        return (self.__r, self.__gr, self.__gb, self.__b)
 
     def save_config_file_with_calculated_black_level(self):
         """
         Save Black levels in Config File.
         """
-        out_file_path = get_config_out_file(self.in_config_file)
 
-        if not out_file_path:
+        if not os.path.exists(self.in_config_file):
+            # Display a warning message.
+            print(
+                "\n\033[31mError!\033[0m File configs.yml does "
+                'not exist in "app_data" directory.'
+            )
+
+            generate_separator("", "*")
             return
 
         # Read the existing file, set the calculated black levels and save the output file.
-        yaml_file = ReadYMLFile(self.in_config_file)
+        yaml_file = ReadWriteYMLFile(self.in_config_file)
         yaml_file.set_blc_data(self.__r, self.__gr, self.__gb, self.__b)
-        yaml_file.save_file(out_file_path)
+        yaml_file.save_file(self.in_config_file)
 
         # Get the directory name using the file name.
-        print("File saved at:", os.path.dirname(out_file_path))
+        print("File saved at:", os.path.dirname(self.in_config_file))
         generate_separator("", "*")
+
+    def apply_blc_levels(self, blc_levels):
+        """
+        Applying black levels to the raw image
+        """
+        status, apply_flag = self.blc_algo.apply_blclevels(
+            blc_levels, self.in_config_file, self.is_linear
+        )
+        generate_separator("", "*")
+        return status, apply_flag

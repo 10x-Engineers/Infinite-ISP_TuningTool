@@ -105,13 +105,13 @@ class NEAlgo:
             pil_image = Image.fromarray(patch)
 
             image_scale_factor = determine_image_scale_factor(
-                root, patch.shape[1], patch.shape[0], 50, 50
+                root, patch.shape[1] * 6, patch.shape[0] * 6, 50, 50
             )
             # Create a canvas for displaying the image
             canvas = tk.Canvas(
                 patches,
                 width=patch.shape[1] / image_scale_factor,
-                height=patch.shape[1] / image_scale_factor,
+                height=patch.shape[0] / image_scale_factor,
             )
             canvas.grid(row=0, column=count_i, padx=10, pady=10)
 

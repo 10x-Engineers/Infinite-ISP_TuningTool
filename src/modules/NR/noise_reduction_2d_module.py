@@ -33,7 +33,7 @@ class NEModule:
         )
         is_selected, self.raw_image_para = select_image_and_get_para(file_type)
 
-        return is_selected, self.raw_image_para
+        return is_selected
 
     def color_checker_selection_frame(self):
         """
