@@ -17,7 +17,7 @@ from src.utils.gui_common_utils import (
     pop_up_msg,
     generate_separator,
 )
-from src.utils.read_yaml_file import ReadYMLFile
+from src.utils.read_yaml_file import ReadWriteYMLFile
 from src.utils.algo_common_utils import select_file
 
 
@@ -167,7 +167,7 @@ class GammaModule:
         """
         Get the data from the selected yml file for plotting user defined gamma
         """
-        read_yml_file = ReadYMLFile(self.config_path)
+        read_yml_file = ReadWriteYMLFile(self.config_path)
         self.bpp = read_yml_file.get_bits_depth()
         gamma_luts = read_yml_file.get_gamma_correction()
 

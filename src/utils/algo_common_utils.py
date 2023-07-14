@@ -8,6 +8,7 @@ import re
 import tkinter as tk
 from tkinter import filedialog as fd
 from pathlib import Path
+import os
 import numpy as np
 import cv2
 from src.utils.gui_common_utils import generate_separator
@@ -47,7 +48,11 @@ def select_file(title, filetypes):
     root.attributes("-topmost", True)
     root.withdraw()
     root.focus()
-    file_name = fd.askopenfile(title=title, filetypes=filetypes)
+    default_folder = "data_set"
+    default_path = os.path.join(os.getcwd(), default_folder)
+    file_name = fd.askopenfile(
+        title=title, initialdir=default_path, filetypes=filetypes
+    )
     root.destroy()
     if file_name:
         return True, file_name

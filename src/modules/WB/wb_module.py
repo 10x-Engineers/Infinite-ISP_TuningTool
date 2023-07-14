@@ -11,14 +11,13 @@ from matplotlib import pyplot as plt
 from src.modules.WB.white_balance_algo import WhiteBalanceAlgo
 from src.utils.algo_common_utils import select_image_and_get_para, generate_separator
 from src.utils.area_selection_frame import SelectAreaFrame as select_area_frame
-from src.utils.read_yaml_file import ReadYMLFile
+from src.utils.read_yaml_file import ReadWriteYMLFile
 from src.utils.gui_common_utils import (
     determine_image_scale_factor,
     cv2_to_pil_image,
     select_file_saving_dir,
     get_tk_image,
     pop_up_msg,
-    get_config_out_file,
 )
 
 
@@ -205,17 +204,23 @@ class WhiteBalanceModule:
         """
         Save the configuration file with calculated wb data.
         """
-        out_file_path = get_config_out_file(self.in_config_file)
 
-        if not out_file_path:
+        if not os.path.exists(self.in_config_file):
+            # Display a warning message.
+            print(
+                "\n\033[31mError!\033[0m File configs.yml does "
+                'not exist in "app_data" directory.'
+            )
+
+            generate_separator("", "*")
             return
 
         # Read the existing file, set the calculated black
         # levels and save the output file.
-        yaml_file = ReadYMLFile(self.in_config_file)
+        yaml_file = ReadWriteYMLFile(self.in_config_file)
         yaml_file.set_wb_data(r_gain=self.r_gain, b_gain=self.b_gain)
-        yaml_file.save_file(out_file_path)
+        yaml_file.save_file(self.in_config_file)
 
         # Get the directory name using the file name.
-        print("File saved at:", os.path.dirname(out_file_path))
+        print("File saved at:", os.path.dirname(self.in_config_file))
         generate_separator("", "*")

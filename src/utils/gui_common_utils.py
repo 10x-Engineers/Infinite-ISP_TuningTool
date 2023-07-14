@@ -160,14 +160,21 @@ def get_config_out_file(in_file_path):
         ("YAML Files", "*.yml"),
     ]
 
-    initial_file = "configuration.yml"
+    initial_file = "configs.yml"
 
     out_file_path = file_saving_path(def_ext, file_types, initial_file)
 
     if not out_file_path:
-        print("\033[31mError!\033[0m File destination path is not selected.")
+        print("\033[31mWarning!\033[0m File destination path is not selected.")
         generate_separator("", "*")
         return None
+
+    # Return if selected output config and input config paths is same.
+    if os.path.dirname(out_file_path.replace("/", "\\")) == os.path.dirname(
+        in_file_path.replace("/", "\\")
+    ):
+        return None
+
     return out_file_path
 
 

@@ -5,13 +5,13 @@ Author: 10xEngineers
 ------------------------------------------------------------
 """
 import os
-import sys
 import warnings
 import tkinter as tk
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import minimize
 from skimage import color
+from src.menu.menu_common_func import end_tuning_tool
 from src.modules.WB.white_balance_algo import WhiteBalanceAlgo as WBAlgo
 from src.utils.gui_common_utils import (
     generate_separator,
@@ -61,7 +61,7 @@ class ColorCorrectionMatrixAlgo:
                 + ref_file_dir
                 + '" directory.',
             )
-            sys.exit()
+            end_tuning_tool()
 
         # Check and exit the program if refD65Lin file does not exit.
         if os.path.exists(ref_d65_lin_path):
@@ -72,7 +72,7 @@ class ColorCorrectionMatrixAlgo:
                 + ref_file_dir
                 + '" directory.'
             )
-            sys.exit()
+            end_tuning_tool()
 
         self.data = data
 
@@ -205,7 +205,7 @@ class ColorCorrectionMatrixAlgo:
                     os.path.basename(file_name),
                     '" data.',
                 )
-                sys.exit()
+                end_tuning_tool()
 
             # Data storage array
             data = []
@@ -221,7 +221,7 @@ class ColorCorrectionMatrixAlgo:
                         os.path.basename(file_name),
                         '" data.',
                     )
-                    sys.exit()
+                    end_tuning_tool()
                 # Convert the values to float
                 try:
                     values = [float(val) for val in values]
@@ -231,7 +231,7 @@ class ColorCorrectionMatrixAlgo:
                         os.path.basename(file_name),
                         '" data.',
                     )
-                    sys.exit()
+                    end_tuning_tool()
 
                 data.append(values)
         data = np.array(data)
@@ -345,11 +345,22 @@ class ColorCorrectionMatrixAlgo:
         Calculated the initial ccm matrix for the optimizer.
         """
         data = self.data
+        mean_r_avg = np.mean(data.r_avg)
+        mean_g_avg = np.mean(data.g_avg)
+        mean_b_avg = np.mean(data.b_avg)
+
+        # Zero error check for division
+        if mean_r_avg == 0:
+            mean_r_avg = np.mean(data.ref_d65_lin[:, 0])
+        if mean_g_avg == 0:
+            mean_g_avg = np.mean(data.ref_d65_lin[:, 1])
+        if mean_b_avg == 0:
+            mean_b_avg = np.mean(data.ref_d65_lin[:, 2])
 
         # Get diagonal values
-        red_channel = np.mean(data.ref_d65_lin[:, 0]) / np.mean(data.r_avg)
-        green_channel = np.mean(data.ref_d65_lin[:, 1]) / np.mean(data.g_avg)
-        blue_channel = np.mean(data.ref_d65_lin[:, 2]) / np.mean(data.b_avg)
+        red_channel = np.mean(data.ref_d65_lin[:, 0]) / mean_r_avg
+        green_channel = np.mean(data.ref_d65_lin[:, 1]) / mean_g_avg
+        blue_channel = np.mean(data.ref_d65_lin[:, 2]) / mean_b_avg
 
         # Clear initial ccm array
         data.initial_cccm = []
@@ -375,14 +386,19 @@ class ColorCorrectionMatrixAlgo:
             [data.r_avg[23], data.b_avg[23], data.g_avg[23]]
         )
 
-        ref_black_patch_avg = np.mean(data.ref_d65_lin[23])
-        amp_fact = ref_black_patch_avg / input_black_patch_avg
+        # Zero division check
+        if input_black_patch_avg == 0:
+            amp_fact = 1
+        else:
+            ref_black_patch_avg = np.mean(data.ref_d65_lin[23])
+            amp_fact = ref_black_patch_avg / input_black_patch_avg
+
         amp_fact_mat = np.array([[amp_fact]])
 
         self.data = data
         return amp_fact_mat
 
-    def set_parameters(self, points, rgb_image, algo, maintain_wb):
+    def set_parameters(self, points, rgb_image, algo, maintain_wb, wb_flag):
         """
         Set parameters
         """
@@ -392,6 +408,7 @@ class ColorCorrectionMatrixAlgo:
         data.rgb_image = rgb_image
         data.is_delta_e = algo
         data.maintain_wb = maintain_wb
+        data.wb_flag = wb_flag
 
         self.data = data
 
@@ -400,19 +417,23 @@ class ColorCorrectionMatrixAlgo:
         Get requirements for algorithm and implement it
         """
         data = self.data
-
+        wb_flag = data.wb_flag
         wb_algo = WBAlgo(data.rgb_image, data.sub_rect_points)
         data.r_avg, data.g_avg, data.b_avg = wb_algo.get_patches_averages()
 
-        r_gain, b_gain = wb_algo.calculate_wb_gains()
-        data.white_balanced_image = wb_algo.apply_wb_gains(r_gain, b_gain)
+        # Check if white balance flag is true
+        if wb_flag is True:
+            r_gain, b_gain = wb_algo.calculate_wb_gains()
+            data.white_balanced_image = wb_algo.apply_wb_gains(r_gain, b_gain)
+            self.apply_wb_gains_on_patches(r_gain, b_gain)
+        else:
+            data.white_balanced_image = data.rgb_image
 
-        self.apply_wb_gains_on_patches(r_gain, b_gain)
+        # Finding initial CCM guess
         self.find_initial_ccm()
         ccm_mat = self.calculate_ccm_matrix()
-
-        self.ccm_output_frame()
         self.display_ccm_matrix(ccm_mat)
+        self.ccm_output_frame()
 
         self.data = data
 
@@ -606,12 +627,18 @@ class ColorCorrectionMatrixAlgo:
         # keeping imatest convention of colum sum to 1 mat. O*A => A = ccm
         out = np.matmul(img1, data.ccm_float.transpose())
 
-        # clipping after ccm is must to eliminate neg values
-        out = np.uint8(np.clip(out, 0, 255))
+        # Normalize the out mat between 0 and 1
+        out = out / 255
 
-        # convert back
+        # Apply gamma 2.2
+        out = np.power(out, (0.45))
+
+        # Clip and map image on 8 bits.
+        out = np.uint8(np.clip(out, 0, 1) * 255)
+
+        # Reshaped the image
         out = out.reshape(image.shape)
-        # out = np.uint16(out * (2**self.bit_depth - 1))
+
         return out
 
     def ccm_output_frame(self):
@@ -733,11 +760,11 @@ class ColorCorrectionMatrixAlgo:
 
             # Get the directory name from the file name and display at console.
             generate_separator("", "*")
-            print("File saved at:", file_path)
+            print("\nFile saved at:", file_path)
             data.root.destroy()
         else:
-            pop_up_msg("Files not saved.")
-            print("\033[31mWarning!\033[0m File destination path is not selected.")
+            pop_up_msg("\nFiles not saved.")
+            print("\n\033[31mWarning!\033[0m File destination path is not selected.")
 
 
 class CcmAlgoStorage:
@@ -769,4 +796,5 @@ class CcmAlgoStorage:
 
         self.initial_cccm = []
         self.maintain_wb = False
+        self.wb_flag = False
         self.is_delta_e = True

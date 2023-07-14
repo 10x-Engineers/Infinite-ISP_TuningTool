@@ -6,9 +6,9 @@ Author: 10xEngineers
 """
 import os
 from src.utils.algo_common_utils import select_image_and_get_para
-from src.utils.gui_common_utils import get_config_out_file, generate_separator
+from src.utils.gui_common_utils import generate_separator
 from src.utils.area_selection_frame import SelectAreaFrame as select_area_frame
-from src.utils.read_yaml_file import ReadYMLFile
+from src.utils.read_yaml_file import ReadWriteYMLFile
 from src.modules.CCM.ccm_algo import ColorCorrectionMatrixAlgo as CcmAlgo
 
 
@@ -24,6 +24,7 @@ class ColorCorrectionMatrixModule:
         self.selection_frame = None
         self.is_delta_e = True
         self.ccm_algo = None
+        self.wb_flag = False
 
     def is_image_and_para_loaded(self):
         """
@@ -54,6 +55,13 @@ class ColorCorrectionMatrixModule:
             return True
         return False
 
+    def set_wb_flag(self, flag):
+        """
+        Set flag to true or false if user wants
+        to apply white balance
+        """
+        self.wb_flag = flag
+
     def set_algo_type(self, algo_type):
         """
         Set the algorithm type, existing algorithms are
@@ -78,6 +86,7 @@ class ColorCorrectionMatrixModule:
             self.raw_image_para.rgb_image,
             self.is_delta_e,
             self.maintain_wb,
+            self.wb_flag,
         )
         generate_separator("Algorithm is running", "-")
         self.ccm_algo.execute_algo()
@@ -87,20 +96,26 @@ class ColorCorrectionMatrixModule:
         """
         Save the configuration file with calculated ccm data.
         """
-        out_file_path = get_config_out_file(self.in_config_file)
 
-        if not out_file_path:
+        if not os.path.exists(self.in_config_file):
+            # Display a warning message.
+            print(
+                "\n\033[31mError!\033[0m File configs.yml does "
+                'not exist in "app_data" directory.'
+            )
+
+            generate_separator("", "*")
             return
 
         ccm_data = self.ccm_algo.get_ccm_matrix()
-        yaml_file = ReadYMLFile(self.in_config_file)
+        yaml_file = ReadWriteYMLFile(self.in_config_file)
         yaml_file.set_ccm_data(
             corrected_red=ccm_data[0],
             corrected_green=ccm_data[1],
             corrected_blue=ccm_data[2],
         )
-        yaml_file.save_file(out_file_path)
+        yaml_file.save_file(self.in_config_file)
 
         # Get the directory name using the file name.
-        print("File saved at:", os.path.dirname(out_file_path))
+        print("File saved at:", os.path.dirname(self.in_config_file))
         generate_separator("", "*")

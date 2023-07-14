@@ -6,15 +6,16 @@ Author: 10xEngineers
 """
 
 import os
-import sys
+import shutil
 from src.menu.black_level_calibration_menu import BlackLevelCalibrationMenu as BlcMenu
 from src.menu.color_correction_matrix_menu import ColorCorrectionMatrixMenu as CcmMenu
 from src.menu.gamma_menu import GammaMenu
 from src.menu.luma_noise_menu import NEMenu as neMenu
+from src.menu.config_files_menu import ConfigFilesMenu
 from src.menu.menu_common_func import (
     display_welcome_note,
-    get_user_input,
-    invalid_choice_message,
+    end_tuning_tool,
+    print_and_select_menu,
 )
 from src.menu.white_balance_menu import WhiteBalanceMenu as WbMenu
 from src.menu.bayer_noise_menu import BNEMenu as bne
@@ -30,41 +31,51 @@ class TuningTool:
     This is class of the tuning tool which calls differnt modules.
     """
 
-    # Config file menu options
     # Here is applied the color formatting to the text.
     # The escape sequence "\033[36m" is used to set the
     # forground color. There is a particular color against
     # each sequence.
 
-    load_config_menu_options = {"1": "Load a \033[36mYaml file\033[0m.", "2": "Quit\n"}
+    # Config file menu options
+    load_config_menu_options = ["Load a Yaml file", "Quit\n"]
 
     # Main menu options
-    tuning_tool_menu_options = {
-        "1": "Calculate \033[35mBlack Levels\033[0m",
-        "2": "Calculate \033[33mColorChecker White Balance\033[0m",
-        "3": "Calculate \033[36mColor Correction Matrix\033[0m",
-        "4": "Generate \033[35mGamma Curves\033[0m",
-        "5": "Estimate \033[33mBayer Noise Levels\033[0m",
-        "6": "Estimate \033[36mLuminance Noise Levels\033[0m",
-        "7": "Quit\n",
-    }
+    tuning_tool_menu_options = [
+        "Calibrate Black Levels",
+        "Calculate ColorChecker White Balance",
+        "Calculate Color Correction Matrix",
+        "Generate Gamma Curves",
+        "Estimate Bayer Noise Levels",
+        "Estimate Luminance Noise Levels",
+        "Generate Configuration Files",
+        "Quit\n",
+    ]
+
+    load_app_data_config_menu_options = ["Yes", "No\n"]
 
     def __init__(self):
         """
         This is the main and starting point of the tuning tool.
         """
+
         self.in_config_file = None
         display_welcome_note()
 
         # Load pipeline configuration YML
         self.load_config()
 
+        self.start_main_menu()
+
+    def start_main_menu(self):
+        """
+        This is the main and starting point of main menu.
+        """
+
         while True:
             # Print the main menu of the Tuning Tool on the console.
-            self.display_tuning_tool_menu()
+            generate_separator("Main Menu", "-")
 
-            # Get user's input to continue the menu
-            choice = get_user_input()
+            choice = print_and_select_menu(self.tuning_tool_menu_options)
 
             if choice == "1":
                 # Start Black Level Calulation tool
@@ -78,12 +89,8 @@ class TuningTool:
 
             elif choice == "3":
                 # Start Color Correction Matrix calculation tool
-                while True:
-                    # Continue the CCM tool until user either exit or go to main menu
-                    ccm_menu = CcmMenu(self.in_config_file)
-                    ccm_again = ccm_menu.start_menu()
-                    if not ccm_again:
-                        break
+                ccm_menu = CcmMenu(self.in_config_file)
+                ccm_menu.start_menu()
 
             elif choice == "4":
                 # Start gamma tool
@@ -101,11 +108,13 @@ class TuningTool:
                 ne_menu.start_menu()
 
             elif choice == "7":
-                # Exit the application
-                sys.exit()
+                # Start file generation menu
+                fmenu = ConfigFilesMenu(self.in_config_file)
+                fmenu.start_menu()
 
-            else:
-                invalid_choice_message()
+            elif choice == "8":
+                # Exit the application
+                end_tuning_tool()
 
     def load_config(self):
         """
@@ -113,7 +122,7 @@ class TuningTool:
         in the config directory. If this file is renamed or removed by the user,
         this function allow user to select a new YAML file.
         """
-        config_file_name = "configs.yml"
+        config_file_name = "default_configs.yml"
         config_file_dir = "config"
 
         # Join file and dir and load file if file exists
@@ -123,56 +132,28 @@ class TuningTool:
 
         # Exist if file exits and continue with main menu of the Tuning Tool.
         if os.path.exists(self.in_config_file):
+            self.copy_config_file(self.in_config_file, True)
             return
 
         # Display a warning message.
         print(
-            "\n\033[31mError!\033[0m File config.yml does "
-            'not exist in "config" directory.'
+            "\n\033[31mError!\033[0m The default_configs.yml file does "
+            'not exist in "config" directory.\nPlease ensure that the file is present.'
         )
 
         generate_separator("", "*")
-
-        # Display a menu to select a yaml file if file does not exits.
-        while True:
-            # Print the menu for loading config file
-            self.display_load_config_menu()
-
-            # Get user's input
-            choice = get_user_input()
-            if choice == "1":
-                # True if file is loaded
-                file_selected = self.handle_custom_config()
-
-                if not file_selected:
-                    continue
-                else:
-                    break
-
-            elif choice == "2":
-                sys.exit()
-
-            else:
-                invalid_choice_message()
-
-    def display_load_config_menu(self):
-        """
-        This function displays the menu that allow the user to select and load the config file.
-        """
-        print("Select a command:")
-
-        for key, value in self.load_config_menu_options.items():
-            print(key + ". " + value)
+        end_tuning_tool()
 
     def handle_custom_config(self):
         """
         Here is pop upped a file selection dialog that
         returns true if file is selected
         """
+
         title = "Open an image file."
         file_type = (("YAML Files", "*.yml"),)
-        file_selected, file_name = select_file(title, file_type)
 
+        file_selected, file_name = select_file(title, file_type)
         if not file_selected:
             print("\033[31mError!\033[0m File is not selected.")
             generate_separator("", "*")
@@ -190,17 +171,43 @@ class TuningTool:
 
         return True
 
-    def display_tuning_tool_menu(self):
+    def copy_config_file(self, config, is_default_config):
         """
-        Display the main menu of tuning tool
+        This function checks that either there is already configs.yml present in the
+        app_data or not. If not then copy the user selected or default configs.yml and
+        save into app_data folder. If present then it overwright the exiting one.
         """
-        generate_separator("Main Menu", "-")
+        des_file_name = "configs.yml"
 
-        print("Select a command:")
+        src_file = config
 
-        # Print each menu option of the tuning tool.
-        for key, value in self.tuning_tool_menu_options.items():
-            print(key + ". " + value)
+        des_folder_name = "config"
+
+        des_folder = os.path.join(os.getcwd(), des_folder_name)
+
+        if not os.path.exists(des_folder):
+            os.makedirs(des_folder)
+
+        des_file = os.path.join(des_folder, des_file_name)
+
+        if not os.path.exists(des_file):
+            shutil.copyfile(src_file, des_file)
+
+        else:
+            if not is_default_config:
+                shutil.copyfile(src_file, des_file)
+
+            else:
+                choice = print_and_select_menu(
+                    self.load_app_data_config_menu_options,
+                    message=
+                    "A configs.yml file exits in configs directory. Do you want to load it?",
+                )
+
+                if choice == "2":
+                    shutil.copyfile(src_file, des_file)
+
+        self.in_config_file = des_file
 
 
 if __name__ == "__main__":
