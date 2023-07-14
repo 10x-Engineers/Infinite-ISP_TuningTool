@@ -22,7 +22,7 @@ This cross-platform application provides a diverse range of algorithms aimed at 
 
 ## Usage
 
-Tuning Tool is designed to work with the Infinite-ISP_ReferenceModel. It uses the config file from the Infinite-ISP_ReferenceModel, performs the calibration, and updates the config file with the tuned parameters that can be used in the pipeline. For more details see [User Guide](https://github.com/10xEngineersTech/Infinite-ISP_TuningTool/blob/214f826284780db59c63b2d1932eeb0612619ec3/docs/Tuning%20Tool%20User%20Guide.pdf)
+Tuning Tool is designed to work with the Infinite-ISP_ReferenceModel. It uses the config file from the Infinite-ISP_ReferenceModel, performs the calibration, and updates the config file with the tuned parameters that can be used in the pipeline. For more details see [User Guide](https://github.com/10xEngineersTech/Infinite-ISP_TuningTool/blob/84aec02738a50e1aa6b7a5c25e24edf7eaa1cb73/docs/Tuning%20Tool%20User%20Guide.pdf)
 
 Infinite-ISP Tuning Tool can be used separately as a stand-alone application for image quality analysis. This comprehensive toolset not only provides user with precise control over the calibration modules, but also allows user to analyse the quality of the images using the analysis modules. With respect to its usage, it is divided into three categories:
 
@@ -92,7 +92,7 @@ Upon successfully launching the Tuning Tool, its main menu pops up with a list o
 
 
 ## User Guide
-For more comprehensive documentation and to understand how to use the Tuning Tool effectively, please visit the [User Guide](https://github.com/10xEngineersTech/Infinite-ISP_TuningTool/blob/214f826284780db59c63b2d1932eeb0612619ec3/docs/Tuning%20Tool%20User%20Guide.pdf). 
+For more comprehensive documentation and to understand how to use the Tuning Tool effectively, please visit the [User Guide](https://github.com/10xEngineersTech/Infinite-ISP_TuningTool/blob/84aec02738a50e1aa6b7a5c25e24edf7eaa1cb73/docs/Tuning%20Tool%20User%20Guide.pdf). 
 
 ## License
 This project is licensed under Apache 2.0 (see [LICENSE](https://github.com/10xEngineersTech/InfiniteISP_TuningTool/blob/documentation_updates/LICENSE.txt) file).
