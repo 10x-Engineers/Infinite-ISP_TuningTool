@@ -24,7 +24,7 @@ This cross-platform application provides a diverse range of algorithms aimed at 
 
 Tuning Tool is designed to work with the Infinite-ISP_ReferenceModel. It uses the config file from the Infinite-ISP_ReferenceModel, performs the calibration, and updates the config file with the tuned parameters that can be used in the pipeline. For more details see [User Guide](https://github.com/10xEngineersTech/InfiniteISP_TuningTool#user-guide)
 
-Infinite-ISP Tuning Tool can be used separately as a stand-alone application for image quality analysis. This comprehensive toolset not only provides user with precise control over the calibration modules, but also allows user to analyse the quality of the images using the analysis modules. With respect to its usage, it is divided into two categories:
+Infinite-ISP Tuning Tool can be used separately as a stand-alone application for image quality analysis. This comprehensive toolset not only provides user with precise control over the calibration modules, but also allows user to analyse the quality of the images using the analysis modules. With respect to its usage, it is divided into three categories:
 
 - Calibration Tools
 
@@ -43,7 +43,7 @@ The Infinite-ISP Tuning Tool provides the following features.
 | Gamma | Compares the user-defined gamma curve with the sRGB color space gamma ≈ 2.2.| 
 | Bayer Noise Level Estimation | Estimates the noise levels of the six grayscale patches on a ColorChecker RAW image.|
 | Luminance Noise Level Estimation | Estimates the luminance noise level of the six grayscale patches on a ColorChecker RAW or RGB image.|
-| Generate Configuration Files | Generates the configuration files for the Infinite-ISP_ReferenceModel and FPGA.| 
+| Configuration Files | Generates the configuration files for the Infinite-ISP_ReferenceModel and FPGA firmware.| 
 
 
 
