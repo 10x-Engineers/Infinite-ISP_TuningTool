@@ -51,7 +51,7 @@ The Infinite-ISP Tuning Tool provides the following features.
 
 ### Prerequisites
 The project is compatible with `Python_3.10.11`. <br>
-<br>The dependencies are listed in the [requirements.txt](https://github.com/10xEngineersTech/InfiniteISP_TuningTool/blob/master/requirements.txt) file. <br>
+<br>The dependencies are listed in the [requirements.txt](https://github.com/10xEngineersTech/Infinite-ISP_TuningTool/blob/white_balance_update/requirements.txtt) file. <br>
 <br>The project assumes pip package manager as a pre-requisite. <br>
 ### Tool Setup 
 To use the Tuning Tool, follow these steps:
@@ -71,7 +71,7 @@ After cloning the repository and installing all the dependencies, follow these s
 
 - Open the terminal and navigate to the project directory.
 
-- Run the [tuning_tool.py](https://github.com/10xEngineersTech/InfiniteISP_TuningTool/blob/qa_improvements_ss/tuning_tool.py) file using Python by executing the following command:
+- Run the [tuning_tool.py](https://github.com/10xEngineersTech/Infinite-ISP_TuningTool/blob/white_balance_update/tuning_tool.py) file using Python by executing the following command:
     ```shell
     python tuning_tool.py
     ```
