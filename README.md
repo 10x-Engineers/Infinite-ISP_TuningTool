@@ -38,7 +38,7 @@ The Infinite-ISP Tuning Tool provides the following features.
 | Module             | Description                                                               |
 | ----------------- | ------------------------------------------------------------------ |
 | Black Level Calibration (BLC) | Calculates the black levels of a raw image for each channel (R, Gr, Gb, and B). 
-| ColorChecker White Balance | Calculates the white balance gains (R gain and B gains) on a ColorChecker RAW or RGB image.|
+| White Balance (WB) | Calculates the white balance gains (R gain and B gains) on a ColorChecker RAW or RGB image.|
 | Color Correction Matrix (CCM) | Calculates a 3x3 color correction matrix using a ColorChecker RAW or RGB image.|
 | Gamma | Compares the user-defined gamma curve with the sRGB color space gamma ≈ 2.2.| 
 | Bayer Noise Level Estimation | Estimates the noise levels of the six grayscale patches on a ColorChecker RAW image.|
