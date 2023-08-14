@@ -25,7 +25,7 @@ class WhiteBalanceMenu:
     apply_save_wb_menu_options = [
         "Apply White Balance on the Input Image",
         "Save config.yml with the Calculated WB Gains",
-        "Restart the ColorChecker White Balance Tool",
+        "Restart the White Balance Tool",
         "Return to the Main Menu",
         "Quit\n",
     ]
@@ -115,7 +115,7 @@ class WhiteBalanceMenu:
         Welcome note at the start of ccm
         """
         os.system("cls")
-        menu_title("Welcome to the \033[33mColorChecker White Balance Tool \033[0m ")
+        menu_title("Welcome to the \033[33mWhite Balance Tool \033[0m ")
         print("Raw file name format: Name_WxH_Nbits_Bayer.raw")
         print("For example: ColorChecker_2592x1536_12bits_RGGB.raw\n")
 

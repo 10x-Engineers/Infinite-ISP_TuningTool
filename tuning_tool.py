@@ -42,7 +42,7 @@ class TuningTool:
     # Main menu options
     tuning_tool_menu_options = [
         "Calibrate Black Levels",
-        "Calculate ColorChecker White Balance",
+        "Calculate White Balance",
         "Calculate Color Correction Matrix",
         "Generate Gamma Curves",
         "Estimate Bayer Noise Levels",
@@ -83,7 +83,7 @@ class TuningTool:
                 blc_menu.start_menu()
 
             elif choice == "2":
-                # Start ColorChecker White Balance tool
+                # Start White Balance tool
                 wb_menu = WbMenu(self.in_config_file)
                 wb_menu.start_menu()
 
