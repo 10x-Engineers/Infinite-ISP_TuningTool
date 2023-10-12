@@ -101,6 +101,7 @@ This project is licensed under Apache 2.0 (see [LICENSE](https://github.com/10xE
 ## Contact
 For any inquiries or feedback regarding this project, feel free to reach out to us.
 
+Email: isp@10xengineers.ai
 
 Website: http://www.10xEngineers.ai
 
