@@ -91,6 +91,10 @@ Upon successfully launching the Tuning Tool, its main menu pops up with a list o
  - Upon completion of a module, options are presented to either restart that specific module, go back to the main menu to select another module, or exit the Tuning Tool. This allows for flexible exploration and fine-tuning of multiple modules conveniently.
 
 
+## Contributing
+
+Please read the [Contribution Guidelines](docs/CONTRIBUTIONS.md) before making a Pull Request.
+
 ## User Guide
 For more comprehensive documentation and to understand how to use the Tuning Tool effectively, please visit the [User Guide](https://github.com/10xEngineersTech/Infinite-ISP_TuningTool/blob/white_balance_update/docs/Tuning%20Tool%20User%20Guide.pdf). 
 
